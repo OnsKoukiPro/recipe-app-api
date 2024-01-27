@@ -1,0 +1,19 @@
+#specify a list of files excluded from the docker context (directory we run from when we run the docker image)
+#standard file
+# Git
+.git
+.gitignore
+
+# Docker
+.docker
+#local docker file
+
+# Python
+app/__pycache__/
+app/*/__pycache__/
+app/*/*/__pycache__/
+app/*/*/*/__pycache__/
+.env/
+.venv/
+venv/
+#pycache files are local (specific for the local OS not Alpine OS)
