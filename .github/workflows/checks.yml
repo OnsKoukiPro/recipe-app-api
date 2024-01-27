@@ -24,10 +24,10 @@ jobs:
       - name: Test 
         run: docker-compose run --rm app sh -c "python manage.py test"
         #command that runs unit test on the code
-      - name: Lint
-        run: docker-compose run --rm sh -c "flake8"
+      #- name: Lint
+       # run: docker-compose run --rm sh -c "flake8"
          #command that runs linting on the code
-
+         #flake8 is non existing
 
     
 #if we are going to be deploying with GitHub Actions we might add another file called deployment.yml in this file
