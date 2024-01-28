@@ -4,4 +4,6 @@ flake8>=4.0.1,<4.1
 #run  docker-compose run --rm app sh -c "flake8" in cmd to run flake8 => FLAKE 8 IS NOT AVAILABLE IN THE CURRENT DOCKER IMAGES only for pipelines
 
 #run docker-compose run --rm app (app service )sh -c "django-admin startproject app ." to start the django project in the current dir
-#run docker-compose up to run the services
+#run docker-compose up ->to run the services
+#run docker-compose build -> to build the container
+#run docker-compose run --rm app sh -c "python manage.py startapp core" -> to run a new django app called core ( where we are going to save the check db availabilty command)

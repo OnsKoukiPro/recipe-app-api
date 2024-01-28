@@ -21,11 +21,15 @@ ARG DEV=false
 
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
+    apk add --update --no-cache postgresql-client &&\ 
+    apk add --update --no-cache --virtual .tmp-build-deps \
+        build-base postgresql-dev musl-dev && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     if [$DEV= "true"]; \
         then /py/bin/pip install -r /tmp/requirements.dev.txt; \
     fi && \
     rm -rf /tmp && \
+    apk del .tmp-build-deps && \
     adduser \
         --disabled-password \
         --no-create-home \
@@ -39,6 +43,11 @@ RUN python -m venv /py && \
 #4th :remove /tmp to remove extra dependencies --> BEST PRACTICE FOR LIGHT WEIGHT container
 #add user (with/ pass or home dir) that doesnt have root privelegs --> BETTER FOR SECURITY
 
+#apk add --update --no-cache postgresql-client &\  -> install the client package inside the alpine image so that psycog2 package connects to postgres
+#it is a dependency that needs to stay in prod 
+#apk add --update --no-cache --virtuam .tmp-build-deps \
+#        build-base postgresql-dev musl-dev && \ -> sets a virtual dependency package containing the packages needed to install the postgres adapter
+#apk del .tmp-build-deps && \ -> remove them if we are in production
 ENV PATH="/py/bin:$PATH"
 
 #create an path env to avoid specifying full path
