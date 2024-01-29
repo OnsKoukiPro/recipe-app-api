@@ -8,3 +8,10 @@ flake8>=4.0.1,<4.1
 #run docker-compose build -> to build the container
 #run docker-compose run --rm app sh -c "python manage.py startapp core" -> to run a new django app called core ( where we are going to save the check db availabilty command)
 #run docker-compose run --rm app sh -c "python manage.py test" -> to run the test file
+#run docker-compose run --rm app sh -c "python manage.py makemigrations" -> to make db migrations ( create models )
+#run docker-compose run --rm app sh -c "python manage.py migrate" -> to add to the db
+#if we have insonsistent history, we need to clear the volumes
+#docker volume ls ( check the running volume )
+#docker-compose down to clear
+#docker volume rm -name of the volume -> clears the volume
+#run docker-compose run --rm app sh -c "python manage.py createsuperuser" -> create admin

@@ -1,10 +1,10 @@
-#configuration file 
+#configuration file
 version: '3.9'
 #version of the docker compose syntax
 
 services:
   app: #app service
-    build: 
+    build:
       context: . #build the context in the current directory
       args:
         - DEV=true
@@ -15,7 +15,7 @@ services:
     command: > #the command(s) used to run the service --> override it with docker compose run ( by default if we dont specify the command it will use this )
       sh -c "python manage.py test &&
              python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000" 
+             python manage.py runserver 0.0.0.0:8000"
     environment:
       - DB_HOST=db
       - DB_NAME=devdb
@@ -23,18 +23,18 @@ services:
       - DB_PASS=changeme
     depends_on: #db starts before app -> using it doesnt ensure that the app is running just that the service started -> we need to ensure that db is available before running app -> django command
       - db
-    
+
 
 #using docker-compose build command in cmd to run the docker image using the conf file
   db: #db service
-    image: postgres:13-alpine 
+    image: postgres:13-alpine
     volumes: #used to store persistant data in the container
-      - dev-db-data:/var/lib/postgersql/data #mapping in the location on the container that contains data for db 
+      - dev-db-data:/var/lib/postgresql/data #mapping in the location on the container that contains data for db
     environment:
-      - POSTGERS_DB=devdb
-      - POSTGERS_USER=devuser
-      - POSTGERS_PASSWORD:changeme
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=changeme
 
 
-volumes: #maps dir in container to the dir locally, we will have persistant data in the container 
+volumes: #maps dir in container to the dir locally, we will have persistant data in the container
   dev-db-data:
