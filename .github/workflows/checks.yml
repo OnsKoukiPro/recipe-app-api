@@ -3,9 +3,9 @@ name: Checks
 
 on: [push] #trigger
 
-jobs: 
-  test-lint: #job id 
-    name: Test and Lint 
+jobs:
+  test-lint: #job id
+    name: Test and Lint
     runs-on: ubuntu-20.04 #os for job runner
     steps:
       - name: Login to Docker Hub
@@ -20,15 +20,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       #checkout is for testing the availability of  code (jobs that need access to the code (like linting ) )
-      
-      - name: Test 
-        run: docker-compose run --rm app sh -c " python manage.py test"
+
+      - name: Test
+        run: docker-compose run --rm app sh -c " python manage.py wait_for_db && python manage.py test"
         #command that runs unit test on the code (waiting for db to be available and then starting the tests)
       #- name: Lint
        # run: docker-compose run --rm sh -c "flake8"
          #command that runs linting on the code
          #flake8 is non existing
 
-    
+
 #if we are going to be deploying with GitHub Actions we might add another file called deployment.yml in this file
 
