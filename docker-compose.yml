@@ -9,7 +9,7 @@ services:
       args:
         - DEV=true
     ports:
-      - "8000:8000" #port of the local machine : port of the container
+      - "5432:5432" #port of the local machine : port of the container
     volumes:
       - ./app:/app #mapping app dir in the app dir of the container --> reflecting local code in the running container in reel time (synch)
     command: > #the command(s) used to run the service --> override it with docker compose run ( by default if we dont specify the command it will use this )
