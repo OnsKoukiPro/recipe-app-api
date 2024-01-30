@@ -19,7 +19,7 @@ from drf_spectacular.views import (
 ) #import the views from drf_spectacular library to enable documentation
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,5 +28,6 @@ urlpatterns = [
         'api/docs/',
         SpectacularSwaggerView.as_view(url_name='api-schema'),
         name='api-docs',
-    )#what schema to use in generating the Swagger view
+    ), #what schema to use in generating the Swagger view
+    path('api/user/', include('user.urls')),
 ]

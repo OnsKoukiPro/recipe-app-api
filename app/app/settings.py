@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'core', #install the core app we added
     'rest_framework',
     'drf_spectacular', #OpenAPI 3 schema generation for Django REST framework.
+    'user' #user app
 
 ]
 
