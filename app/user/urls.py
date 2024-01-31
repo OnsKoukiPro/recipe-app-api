@@ -10,4 +10,6 @@ app_name = 'user' #is going to be used for the reverse mapping defined in the te
 
 urlpatterns = [
     path('create/', views.CreateUserView.as_view(), name='create'),
+    path('token/', views.CreateTokenView, name='token'),
+    path('me/', views.ManageUserView.as_view(), name='me'),
 ]
