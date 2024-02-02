@@ -30,4 +30,6 @@ urlpatterns = [
         name='api-docs',
     ), #what schema to use in generating the Swagger view
     path('api/user/', include('user.urls')),
+    path('api/recipe/', include('recipe.urls')),
+
 ]

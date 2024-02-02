@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'drf_spectacular', #OpenAPI 3 schema generation for Django REST framework.
-    'user' #user app
+    'user', #user app
+    'recipe' #recipe app
+
 
 ]
 
