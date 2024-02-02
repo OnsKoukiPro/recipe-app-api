@@ -22,6 +22,12 @@ class CreateTokenView(ObtainAuthToken):
     serializer_class = AuthTokenSerializer
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
+    def post(self, request, *args, **kwargs):
+        print("CreateTokenView - post method called")
+        response = super().post(request, *args, **kwargs)
+        print("Response:", response.data)
+        return response
+
 
 class ManageUserView(generics.RetrieveUpdateAPIView):
     """Manage the authenticated user."""
