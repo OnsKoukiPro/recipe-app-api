@@ -12,7 +12,7 @@ services:
       - "8000:8000" #port of the local machine : port of the container
     volumes:
       - ./app:/app #mapping app dir in the app dir of the container --> reflecting local code in the running container in reel time (synch)
-      - dev-static-data:/vol/web:rw #to have persistent data when developping in the local machine
+      - dev-static-data:/app/vol/web #to have persistent data when developping in the local machine
     command: > #the command(s) used to run the service --> override it with docker compose run ( by default if we dont specify the command it will use this )
       sh -c "python manage.py test &&
              python manage.py wait_for_db &&
