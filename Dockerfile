@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED 1
 COPY ./requirements.txt /tmp/requirements.txt
 #copies the file to the /tmp repo in the docker image ( to use it to install the python requirements)
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
-
+COPY ./scripts /scripts
 COPY ./app /app
 #copies the app repo to the docker image
 WORKDIR /app
@@ -23,7 +23,7 @@ RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     apk add --update --no-cache postgresql-client jpeg-dev &&\
     apk add --update --no-cache --virtual .tmp-build-deps \
-        build-base postgresql-dev musl-dev zlib zlib-dev && \
+        build-base postgresql-dev musl-dev zlib zlib-dev linux-headers && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     if [$DEV= "true"]; \
         then /py/bin/pip install -r /tmp/requirements.dev.txt; \
@@ -34,10 +34,12 @@ RUN python -m venv /py && \
         --disabled-password \
         --no-create-home \
         django-user && \
-    mkdir  /app/vol/web/media && \
-    mkdir  /app/vol/web/static && \
-    chown -R django-user:django-user /app/vol && \
-    chmod -R 755 /app/vol
+    mkdir  -p /vol/web/media && \
+    mkdir  -p /vol/web/static && \
+    chown -R django-user:django-user /vol && \
+    #chmod a+rwx -R run/ && \
+    chmod -R 755 /vol && \
+    chmod -R +x /scripts
 
 #Run A commands in the alpine image -> one bloc to just keep 1 image layer --> LIGHT-WEIGHT IMAGE,
 #1st :to create a virtual env to store dependencies --> to avoid conflicting dependencies in the base image (Optional)
@@ -53,10 +55,15 @@ RUN python -m venv /py && \
 #        build-base postgresql-dev musl-dev && \ -> sets a virtual dependency package containing the packages needed to install the postgres adapter
 #apk del .tmp-build-deps && \ -> remove them if we are in production
 #mkdir -p /vol/web/media and static are the directories where we are going to store the static files in the docker volumes
-ENV PATH="/py/bin:$PATH"
+ENV PATH="/scripts:/py/bin:$PATH"
 
 #create an path env to avoid specifying full path
 
 USER django-user
 
 #run the containers as a django-user (not root)
+
+CMD ["run.sh"]
+
+#default command for docker containers spawn from the image built from the dockerfile
+#it runs the script file
