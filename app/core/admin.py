@@ -46,5 +46,6 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(models.User, UserAdmin) #if we only use models.User , it will use the default model manager, we want it to use the UserAdmin
-admin.site.register(models.Recipe)   #enable the model
-admin.site.register(models.Tag)
+admin.site.register(models.Recipe)   #enable the model Recipe and manage it from the admin page
+admin.site.register(models.Tag) #enable the model Tag and manage it from the admin page
+admin.site.register(models.Ingredient) #enable the model Ingredient and manage it from the admin page
