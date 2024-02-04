@@ -1,6 +1,7 @@
 """
 Testing the custom add user Model
 """
+
 from decimal import Decimal #storing one of the values of the recipe object
 from django.test import TestCase
 from django.contrib.auth import get_user_model #get user helper function in case we want to change the user model
@@ -86,5 +87,7 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(ingredient), ingredient.name)
+
+
 
 

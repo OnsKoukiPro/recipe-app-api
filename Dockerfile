@@ -1,13 +1,13 @@
 FROM python:3.9.3-alpine3.13
 #alpine is a lightweight versionn for linux (image with bare minimum dependencies )
 LABEL maintainer="OnsKouki"
-#maintainer is the person/ organisation (website) responsible for maintaining the docker image 
+#maintainer is the person/ organisation (website) responsible for maintaining the docker image
 
 ENV PYTHONUNBUFFERED 1
 #env variable to not buffer the output -> printed directly to the console (log)
 COPY ./requirements.txt /tmp/requirements.txt
 #copies the file to the /tmp repo in the docker image ( to use it to install the python requirements)
-COPY ./requirements.dev.txt /tmp/requirements.dev.txt 
+COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 
 COPY ./app /app
 #copies the app repo to the docker image
@@ -21,9 +21,9 @@ ARG DEV=false
 
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
-    apk add --update --no-cache postgresql-client &&\ 
+    apk add --update --no-cache postgresql-client jpeg-dev &&\
     apk add --update --no-cache --virtual .tmp-build-deps \
-        build-base postgresql-dev musl-dev && \
+        build-base postgresql-dev musl-dev zlib zlib-dev && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     if [$DEV= "true"]; \
         then /py/bin/pip install -r /tmp/requirements.dev.txt; \
@@ -33,9 +33,13 @@ RUN python -m venv /py && \
     adduser \
         --disabled-password \
         --no-create-home \
-        django-user
+        django-user && \
+    mkdir -p /vol/web/media && \
+    mkdir -p /vol/web/static && \
+    chown -R django-user:django-user /vol && \
+    chmod -R 755 /vol
 
-#Run A commands in the alpine image -> one bloc to just keep 1 image layer --> LIGHT-WEIGHT IMAGE, 
+#Run A commands in the alpine image -> one bloc to just keep 1 image layer --> LIGHT-WEIGHT IMAGE,
 #1st :to create a virtual env to store dependencies --> to avoid conflicting dependencies in the base image (Optional)
 #2nd :upgrade pip in the environment
 #3rd :install requirements.txt in the env
@@ -44,10 +48,11 @@ RUN python -m venv /py && \
 #add user (with/ pass or home dir) that doesnt have root privelegs --> BETTER FOR SECURITY
 
 #apk add --update --no-cache postgresql-client &\  -> install the client package inside the alpine image so that psycog2 package connects to postgres
-#it is a dependency that needs to stay in prod 
+#it is a dependency that needs to stay in prod
 #apk add --update --no-cache --virtuam .tmp-build-deps \
 #        build-base postgresql-dev musl-dev && \ -> sets a virtual dependency package containing the packages needed to install the postgres adapter
 #apk del .tmp-build-deps && \ -> remove them if we are in production
+#mkdir -p /vol/web/media and static are the directories where we are going to store the static files in the docker volumes
 ENV PATH="/py/bin:$PATH"
 
 #create an path env to avoid specifying full path
