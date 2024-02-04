@@ -34,10 +34,10 @@ RUN python -m venv /py && \
         --disabled-password \
         --no-create-home \
         django-user && \
-    mkdir -p /vol/web/media && \
-    mkdir -p /vol/web/static && \
-    chown -R django-user:django-user /vol && \
-    chmod -R 755 /vol
+    mkdir  /app/vol/web/media && \
+    mkdir  /app/vol/web/static && \
+    chown -R django-user:django-user /app/vol && \
+    chmod -R 755 /app/vol
 
 #Run A commands in the alpine image -> one bloc to just keep 1 image layer --> LIGHT-WEIGHT IMAGE,
 #1st :to create a virtual env to store dependencies --> to avoid conflicting dependencies in the base image (Optional)
